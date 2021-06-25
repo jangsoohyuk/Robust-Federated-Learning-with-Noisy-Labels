@@ -169,9 +169,6 @@ if __name__ == '__main__':
     forget_rate_schedule = np.ones(args.epochs) * forget_rate
     forget_rate_schedule[:args.num_gradual] = np.linspace(0, forget_rate ** exponent, args.num_gradual)
 
-    print("Forget Rate Schedule")
-    print(forget_rate_schedule)
-
     # initialize f_G
     f_G = torch.randn(args.num_classes, args.feature_dim, device=args.device)
     

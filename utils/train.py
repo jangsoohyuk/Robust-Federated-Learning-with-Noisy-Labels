@@ -58,12 +58,12 @@ class LocalUpdateRFL:
         
         self.pseudo_labels = torch.zeros(len(self.dataset), dtype=torch.long, device=self.args.device)
         self.sim = torch.nn.CosineSimilarity(dim=1) 
-        self.loss_func = torch.nn.CrossEntropyLoss(reduce=False)
+        self.loss_func = torch.nn.CrossEntropyLoss(reduction='none')
         self.ldr_train = DataLoader(DatasetSplitRFL(dataset, idxs), batch_size=self.args.local_bs, shuffle=True)
         self.ldr_train_tmp = DataLoader(DatasetSplitRFL(dataset, idxs), batch_size=1, shuffle=True)
             
     def RFLloss(self, logit, labels, feature, f_k, mask, small_loss_idxs, lambda_cen, lambda_e, new_labels):
-        mse = torch.nn.MSELoss(reduce=False)
+        mse = torch.nn.MSELoss(reduction='none')
         ce = torch.nn.CrossEntropyLoss()
         sm = torch.nn.Softmax(dim=1)
         lsm = torch.nn.LogSoftmax(dim=1)

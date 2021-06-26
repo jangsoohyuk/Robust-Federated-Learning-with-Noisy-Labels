@@ -82,6 +82,7 @@ if __name__ == '__main__':
             transform=trans_mnist_val,
         )
         num_classes = 10
+        input_channel = 1
     
     elif args.dataset == 'cifar':
         trans_cifar10_train = transforms.Compose([
@@ -109,6 +110,7 @@ if __name__ == '__main__':
             transform=trans_cifar10_val,
         )
         num_classes = 10
+        input_channel = 3
 
     else:
         raise NotImplementedError('Error: unrecognized dataset')
@@ -155,7 +157,7 @@ if __name__ == '__main__':
     ##############################
     # Build model
     ##############################
-    net_glob = CNN()
+    net_glob = CNN(input_channel=input_channel)
     net_glob = net_glob.to(args.device)
     print(net_glob)
 

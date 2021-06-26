@@ -50,7 +50,7 @@ if __name__ == '__main__':
     ##############################
     # Load dataset and split users
     ##############################
-    '''
+    
     if args.dataset == 'mnist':
         from six.moves import urllib
 
@@ -58,29 +58,31 @@ if __name__ == '__main__':
         opener.addheaders = [('User-agent', 'Mozilla/5.0')]
         urllib.request.install_opener(opener)
 
-        trans_mnist = transforms.Compose([
+        trans_mnist_train = transforms.Compose([
+            transforms.RandomCrop(28, padding=4),
+            transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,)),
         ])
-        dataset_args = dict(
+        trans_mnist_val = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.1307,), (0.3081,)),
+        ])
+        dataset_train = MNIST(
             root='./data/mnist',
             download=True,
-        )
-        dataset_train = MNIST(
             train=True,
-            transform=trans_mnist,
-            noise_type="clean",
-            **dataset_args,
+            transform=trans_mnist_train,
         )
         dataset_test = MNIST(
+            root='./data/mnist',
+            download=True,
             train=False,
-            transform=transforms.ToTensor(),
-            noise_type="clean",
-            **dataset_args,
+            transform=trans_mnist_val,
         )
         num_classes = 10
-    '''
-    if args.dataset == 'cifar':
+    
+    elif args.dataset == 'cifar':
         trans_cifar10_train = transforms.Compose([
             transforms.RandomCrop(32, padding=4),
             transforms.RandomHorizontalFlip(),

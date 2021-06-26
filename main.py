@@ -12,6 +12,7 @@ from torchvision import transforms
 import torch
 
 from data.cifar import CIFAR10
+from data.mnist import MNIST
 from model.Nets import CNN
 from utils.logger import Logger
 from utils.sampling import sample_iid, sample_noniid

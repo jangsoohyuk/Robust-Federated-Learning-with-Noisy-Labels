@@ -62,18 +62,19 @@ class LocalUpdateRFL:
         self.ldr_train = DataLoader(DatasetSplitRFL(dataset, idxs), batch_size=self.args.local_bs, shuffle=True)
         self.ldr_train_tmp = DataLoader(DatasetSplitRFL(dataset, idxs), batch_size=1, shuffle=True)
             
-    def RFLloss(self, logit, labels, feature, f_k, mask, small_loss_idxs, lambda_cen, lambda_e, new_labels):
+    def RFLloss(self, logit, labels, feature, f_k, mask, small_loss_idxs, new_labels):
         mse = torch.nn.MSELoss(reduction='none')
         ce = torch.nn.CrossEntropyLoss()
         sm = torch.nn.Softmax(dim=1)
         lsm = torch.nn.LogSoftmax(dim=1)
-   
+        
         L_c = ce(logit[small_loss_idxs], new_labels)
         L_cen = torch.sum(mask[small_loss_idxs] * torch.sum(mse(feature[small_loss_idxs], f_k[labels[small_loss_idxs]]), 1))
         L_e = -torch.mean(torch.sum(sm(logit[small_loss_idxs]) * lsm(logit[small_loss_idxs]), dim=1))
         
-        if self.args.g_epoch < 100:
-            lambda_cen = 0.01 * (self.args.g_epoch+1)
+        lambda_e = self.args.lambda_e
+        if self.args.g_epoch < self.args.T_pl:
+            lambda_cen = (self.args.lambda_cen * (self.args.g_epoch+1)) / self.args.T_pl
         
         return L_c + (lambda_cen * L_cen) + (lambda_e * L_e)
              
@@ -148,7 +149,7 @@ class LocalUpdateRFL:
                 new_labels = mask[small_loss_idxs]*labels[small_loss_idxs] + (1-mask[small_loss_idxs])*self.pseudo_labels[idx[small_loss_idxs]]
                 new_labels = new_labels.type(torch.LongTensor).to(self.args.device)
                 
-                loss = self.RFLloss(logit, labels, feature, f_k, mask, small_loss_idxs, self.args.lambda_cen, self.args.lambda_e, new_labels)
+                loss = self.RFLloss(logit, labels, feature, f_k, mask, small_loss_idxs, new_labels)
 
                 # weight update by minimizing loss: L_total = L_c + lambda_cen * L_cen + lambda_e * L_e
                 loss.backward()

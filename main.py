@@ -130,7 +130,6 @@ if __name__ == '__main__':
     # Add label noise to data
     ##############################
 
-    #dict_users[i]: client i가 가지고 있는 data의 index들을 저장
     if args.noise_type != "clean":
         for user in range(args.num_users):
             data_indices = list(copy.deepcopy(dict_users[user]))
@@ -169,7 +168,7 @@ if __name__ == '__main__':
     forget_rate_schedule = np.ones(args.epochs) * forget_rate
     forget_rate_schedule[:args.num_gradual] = np.linspace(0, forget_rate ** exponent, args.num_gradual)
 
-    # initialize f_G
+    # Initialize f_G
     f_G = torch.randn(args.num_classes, args.feature_dim, device=args.device)
     
     # Initialize local update objects
@@ -207,9 +206,11 @@ if __name__ == '__main__':
             f_locals.append(f_k)
             local_weights.append(copy.deepcopy(w))
             local_losses.append(copy.deepcopy(loss))
-            
-        w_glob = FedAvg(local_weights)  # update global weights
-        net_glob.load_state_dict(w_glob)  # copy weight to net_glob
+         
+        # update global weights
+        w_glob = FedAvg(local_weights) 
+        # copy weight to net_glob
+        net_glob.load_state_dict(w_glob)  
 
         # Update f_G
         sim = torch.nn.CosineSimilarity(dim=1) 
@@ -222,7 +223,7 @@ if __name__ == '__main__':
         f_G = torch.div(tmp, w_sum)
         
         
-        # logging purposes
+        # logging 
         train_acc, train_loss = test_img(net_glob, log_train_data_loader, args)
         test_acc, test_loss = test_img(net_glob, log_test_data_loader, args)
         results = dict(train_acc=train_acc, train_loss=train_loss,

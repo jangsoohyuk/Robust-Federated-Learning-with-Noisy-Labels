@@ -63,12 +63,12 @@ class CNN(nn.Module):
         h = F.leaky_relu(self.bn9(h), negative_slope=0.01)
         h = F.avg_pool2d(h, kernel_size=h.data.shape[2])
 
-        h = h.view(h.size(0), h.size(1))
+        feature = h.view(h.size(0), h.size(1))
         
-        logit = self.l_c1(h)
+        logit = self.l_c1(feature)
         
         if self.top_bn:
             logit = call_bn(self.bn_c1, logit)
      
-        return logit, h
+        return logit, feature
 

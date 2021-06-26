@@ -187,17 +187,3 @@ class CIFAR10(data.Dataset):
         tmp = '    Target Transforms (if any): '
         fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
         return fmt_str
-
-    def add_noise(self, noise_rate, noise_type, random_state):
-        # noisify train data
-        self.train_labels = np.asarray([[self.train_labels[i]] for i in range(len(self.train_labels))])
-        self.train_noisy_labels, self.actual_noise_rate = noisify(dataset=self.dataset,
-                                                                  train_labels=self.train_labels,
-                                                                  noise_type=noise_type,
-                                                                  noise_rate=noise_rate,
-                                                                  random_state=random_state,
-                                                                  nb_classes=self.nb_classes)
-        self.train_noisy_labels = [i[0] for i in self.train_noisy_labels]
-        _train_labels = [i[0] for i in self.train_labels]
-        self.noise_or_not = np.transpose(self.train_noisy_labels) == np.transpose(_train_labels)
-

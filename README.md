@@ -1,4 +1,4 @@
-# Robust-Federated-Learning-with-Noisy-Labels
+# Robust Federated Learning with Noisy Labels
 This is an unofficial PyTorch implementation of [Robust Federated Learning with Noisy Labels](https://arxiv.org/abs/2012.01700). 
 
 ## Requirements

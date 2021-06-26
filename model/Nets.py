@@ -64,7 +64,7 @@ class CNN(nn.Module):
         h = F.avg_pool2d(h, kernel_size=h.data.shape[2])
 
         feature = h.view(h.size(0), h.size(1))
-        
+
         logit = self.l_c1(feature)
         
         if self.top_bn:

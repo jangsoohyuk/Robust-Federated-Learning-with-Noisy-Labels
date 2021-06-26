@@ -73,6 +73,7 @@ class LocalUpdateRFL:
         L_e = -torch.mean(torch.sum(sm(logit[small_loss_idxs]) * lsm(logit[small_loss_idxs]), dim=1))
         
         lambda_e = self.args.lambda_e
+        lambda_cen = self.args.lambda_cen
         if self.args.g_epoch < self.args.T_pl:
             lambda_cen = (self.args.lambda_cen * (self.args.g_epoch+1)) / self.args.T_pl
         

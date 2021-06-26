@@ -14,7 +14,6 @@ import torch.utils.data as data
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from utils.misc import download_url, check_integrity
-from utils.noisify import noisify
 
 
 class CIFAR10(data.Dataset):

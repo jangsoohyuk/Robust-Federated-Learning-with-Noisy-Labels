@@ -75,7 +75,7 @@ class LocalUpdateRFL:
         lambda_e = self.args.lambda_e
         lambda_cen = self.args.lambda_cen
         if self.args.g_epoch < self.args.T_pl:
-            lambda_cen = (self.args.lambda_cen * (self.args.g_epoch+1)) / self.args.T_pl
+            lambda_cen = (self.args.lambda_cen * self.args.g_epoch) / self.args.T_pl
         
         return L_c + (lambda_cen * L_cen) + (lambda_e * L_e)
              

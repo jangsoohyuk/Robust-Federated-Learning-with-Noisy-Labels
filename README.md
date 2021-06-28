@@ -12,10 +12,10 @@ Results can be reproduced running the following:
 #### MNIST
 
 ```
-python3 main.py --gpu 0 --iid --dataset cifar --epochs 1000 --noise_type symmetric --noise_rate 0.2 
+python3 main.py --gpu 0 --iid --dataset mnist --epochs 1000 --noise_type symmetric --noise_rate 0.2 
 ```
 ```
-python3 main.py --gpu 0 --iid --dataset cifar --epochs 1000 --noise_type pairflip --noise_rate 0.2 
+python3 main.py --gpu 0 --iid --dataset mnist --epochs 1000 --noise_type pairflip --noise_rate 0.2 
 ```
 
 #### CIFAR10
